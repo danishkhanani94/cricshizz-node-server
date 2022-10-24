@@ -53,14 +53,24 @@ Router.get("/:id", (req, res) => {
 });
 
 Router.post("/add-blog", async (req, res) => {
-  const { title, short_title, description, uploaded_by, logo, mainbanner, innerbanner } = req.body;
+  const {
+    title,
+    short_title,
+    description,
+    longdescription,
+    uploaded_by,
+    logo,
+    mainbanner,
+    innerbanner,
+  } = req.body;
   if (
     (!title || !short_title,
-      !innerbanner,
-      !description,
-      !uploaded_by,
-      !mainbanner,
-      !logo)
+    !innerbanner,
+    !description,
+    !longdescription,
+    !uploaded_by,
+    !mainbanner,
+    !logo)
   ) {
     return res.json([
       {
@@ -72,7 +82,8 @@ Router.post("/add-blog", async (req, res) => {
   }
 
   const SQL =
-    `` + "INSERT into blogs (`title`, `short_title`, `logo`, `banner_inner`,`banner_main`, `description`,`uploaded_by`) VALUES ('" +
+    `` +
+    "INSERT into blogs (`title`, `short_title`, `logo`, `banner_inner`,`banner_main`, `description`,`uploaded_by`,`longdescription`) VALUES ('" +
     title +
     "','" +
     short_title +
@@ -86,7 +97,10 @@ Router.post("/add-blog", async (req, res) => {
     description +
     "','" +
     uploaded_by +
-    "')" + ``;
+    "','" +
+    longdescription +
+    "')" +
+    ``;
   connection.query(SQL, (err, rows, fileds) => {
     if (err) {
       return res.json([
