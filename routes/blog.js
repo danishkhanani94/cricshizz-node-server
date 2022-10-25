@@ -1,76 +1,49 @@
 const express = require("express");
 const Router = express.Router();
 
-const connection = require("../connection");
+const db = require("../connection");
 
-Router.get("/", (req, res) => {
-  const data = connection.query(
-    "SELECT * FROM `blogs` ORDER By id desc",
-    (err, rows, fileds) => {
-      if (err) {
-        return res.json([
-          {
-            mess: "Error While Fetching Records",
-            Data: err,
-            success: false,
-          },
-        ]);
-      }
-      return res.json([
-        {
-          mess: "All Blogs",
-          Data: rows,
-          success: true,
-        },
-      ]);
-    }
-  );
+Router.get("/", async (req, res) => {
+  const data = await db.select("blogs", ["*"]);
+  return res.json([
+    {
+      mess: "All Blogs",
+      Data: data,
+      success: true,
+    },
+  ]);
 });
 
-Router.get("/:id", (req, res) => {
+Router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  connection.query(
-    "SELECT * FROM `blogs` WHERE id = " + id,
-    (err, rows, fileds) => {
-      if (err) {
-        return res.json([
-          {
-            mess: "Error While Fetching Records",
-            Data: err,
-            success: false,
-          },
-        ]);
-      }
-      return res.json([
-        {
-          mess: "Single Blog",
-          Data: rows,
-          success: true,
-        },
-      ]);
-    }
-  );
+  const data = await db.select("blogs", ["*"], "id = ?", id);
+  return res.json([
+    {
+      mess: "Single Blog",
+      Data: data,
+      success: true,
+    },
+  ]);
 });
 
 Router.post("/add-blog", async (req, res) => {
   const {
     title,
-    short_title,
     description,
     longdescription,
     uploaded_by,
-    logo,
     mainbanner,
     innerbanner,
+    match_category,
+    team_a,
+    team_b,
   } = req.body;
   if (
-    (!title || !short_title,
-    !innerbanner,
+    (!title || !innerbanner,
     !description,
     !longdescription,
     !uploaded_by,
-    !mainbanner,
-    !logo)
+    !mainbanner)
   ) {
     return res.json([
       {
@@ -80,48 +53,28 @@ Router.post("/add-blog", async (req, res) => {
       },
     ]);
   }
-
-  const SQL =
-    `` +
-    "INSERT into blogs (`title`, `short_title`, `logo`, `banner_inner`,`banner_main`, `description`,`uploaded_by`,`longdescription`) VALUES ('" +
-    title +
-    "','" +
-    short_title +
-    "','" +
-    logo +
-    "','" +
-    innerbanner +
-    "','" +
-    mainbanner +
-    "','" +
-    description +
-    "','" +
-    uploaded_by +
-    "','" +
-    longdescription +
-    "')" +
-    ``;
-  connection.query(SQL, (err, rows, fileds) => {
-    if (err) {
-      return res.json([
-        {
-          mess: "Error While Adding Record",
-          Data: err,
-          success: false,
-        },
-      ]);
-    }
-    return res.json([
-      {
-        mess: "Successfully Added",
-        Data: rows,
-        success: true,
-      },
-    ]);
+  const id = await db.insert("blogs", {
+    title,
+    banner_inner: innerbanner,
+    description,
+    longdescription,
+    uploaded_by,
+    banner_main: mainbanner,
+    match_category,
+    team_a,
+    team_b,
   });
+
+  return res.json([
+    {
+      mess: "Successfully Added",
+      Data: id,
+      success: true,
+    },
+  ]);
 });
 
-Router.delete("/:id", (req, res) => {
+Router.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
   if (!id) {
@@ -133,27 +86,15 @@ Router.delete("/:id", (req, res) => {
       },
     ]);
   }
+  const Deletedid = await db.delete("blogs", "id = ? LIMIT 1", id);
 
-  const SQL = "DELETE FROM blogs WHERE id = '" + id + "'";
-  console.log(SQL);
-  const data = connection.query(SQL, (err, rows, fileds) => {
-    if (err) {
-      return res.json([
-        {
-          mess: "Error While Deleting Record",
-          Data: err,
-          success: false,
-        },
-      ]);
-    }
-    return res.json([
-      {
-        mess: "Successfully Deleted",
-        Data: rows,
-        success: true,
-      },
-    ]);
-  });
+  return res.json([
+    {
+      mess: "Successfully Deleted",
+      Data: Deletedid,
+      success: true,
+    },
+  ]);
 });
 
 module.exports = Router;

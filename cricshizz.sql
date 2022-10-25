@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 24, 2022 at 12:04 PM
+-- Generation Time: Oct 25, 2022 at 09:45 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -30,14 +30,15 @@ SET time_zone = "+00:00";
 CREATE TABLE `blogs` (
   `id` int(11) NOT NULL,
   `title` varchar(255) DEFAULT NULL,
-  `short_title` varchar(255) DEFAULT NULL,
-  `logo` varchar(255) DEFAULT NULL,
   `banner_inner` varchar(255) DEFAULT NULL,
   `description` longtext DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `uploaded_by` varchar(255) DEFAULT NULL,
   `banner_main` varchar(255) DEFAULT '',
-  `longdescription` longtext DEFAULT NULL
+  `longdescription` longtext DEFAULT NULL,
+  `match_category` varchar(255) DEFAULT NULL,
+  `team_a` varchar(255) DEFAULT NULL,
+  `team_b` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -58,7 +59,7 @@ ALTER TABLE `blogs`
 -- AUTO_INCREMENT for table `blogs`
 --
 ALTER TABLE `blogs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
