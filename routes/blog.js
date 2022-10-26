@@ -4,11 +4,13 @@ const Router = express.Router();
 const db = require("../connection");
 
 Router.get("/", async (req, res) => {
-  const data = await db.select("blogs", ["*"]);
+  const [rows, cols] = await db.execute(
+    "SELECT b.* , (SELECT te.name FROM `team_names` te WHERE te.id =  b.team_a ) as team_a , (SELECT t.name FROM `team_names` t WHERE t.id = b.team_b) as team_b , (SELECT c.name FROM `category_names` c WHERE c.id = b.match_category) as match_category FROM `blogs` b ORDER BY b.id DESC"
+  );
   return res.json([
     {
       mess: "All Blogs",
-      Data: data,
+      Data: rows,
       success: true,
     },
   ]);
@@ -16,11 +18,14 @@ Router.get("/", async (req, res) => {
 
 Router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const data = await db.select("blogs", ["*"], "id = ?", id);
+  const [rows, cols] = await db.execute(
+    "SELECT b.* , (SELECT te.name FROM `team_names` te WHERE te.id =  b.team_a ) as team_a , (SELECT t.name FROM `team_names` t WHERE t.id = b.team_b) as team_b , (SELECT c.name FROM `category_names` c WHERE c.id = b.match_category) as match_category FROM `blogs` b WHERE b.id = " +
+      id
+  );
   return res.json([
     {
       mess: "Single Blog",
-      Data: data,
+      Data: rows,
       success: true,
     },
   ]);

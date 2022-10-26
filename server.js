@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
-var multer = require('multer');
+var multer = require("multer");
 var upload = multer();
 
 const corsOptions = {
@@ -11,6 +11,8 @@ const corsOptions = {
   optionsSuccessStatus: 200,
 };
 const BlogRoutes = require("./routes/blog");
+const TeamRoutes = require("./routes/teams");
+const CategoryRoutes = require("./routes/category");
 
 app.use(cors(corsOptions));
 
@@ -22,7 +24,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.any());
 
 app.use("/blogs", BlogRoutes);
-
+app.use("/teams", TeamRoutes);
+app.use("/category", CategoryRoutes);
 
 const PORT = process.env.PORT || args[2] || 5000;
 const server = app.listen(PORT, "0.0.0.0", () => {
