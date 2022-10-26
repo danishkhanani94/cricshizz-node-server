@@ -5,6 +5,7 @@ const cors = require("cors");
 const app = express();
 var multer = require("multer");
 var upload = multer();
+const Router = express.Router();
 
 const corsOptions = {
   origin: "*",
@@ -13,6 +14,7 @@ const corsOptions = {
 const BlogRoutes = require("./routes/blog");
 const TeamRoutes = require("./routes/teams");
 const CategoryRoutes = require("./routes/category");
+const CountRouter = require("./routes/count");
 
 app.use(cors(corsOptions));
 
@@ -23,6 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // for parsing multipart/form-data
 app.use(upload.any());
 
+app.use("/counts", CountRouter);
 app.use("/blogs", BlogRoutes);
 app.use("/teams", TeamRoutes);
 app.use("/category", CategoryRoutes);
