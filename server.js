@@ -15,6 +15,7 @@ const BlogRoutes = require("./routes/blog");
 const TeamRoutes = require("./routes/teams");
 const CategoryRoutes = require("./routes/category");
 const CountRouter = require("./routes/count");
+const GalleryRoutes = require("./routes/gallery")
 
 app.use(cors(corsOptions));
 
@@ -29,6 +30,7 @@ app.use("/counts", CountRouter);
 app.use("/blogs", BlogRoutes);
 app.use("/teams", TeamRoutes);
 app.use("/category", CategoryRoutes);
+app.use("/gallery", GalleryRoutes);
 
 const PORT = process.env.PORT || args[2] || 5000;
 const server = app.listen(PORT, "0.0.0.0", () => {
