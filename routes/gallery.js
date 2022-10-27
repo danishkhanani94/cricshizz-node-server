@@ -26,6 +26,10 @@ Router.get("/getByID/:id", async (req, res) => {
     "SELECT b.* , (SELECT te.name FROM `team_names` te WHERE te.id =  b.team_a ) as team_a , (SELECT t.name FROM `team_names` t WHERE t.id = b.team_b) as team_b , (SELECT c.name FROM `category_names` c WHERE c.id = b.match_category) as match_category FROM `gallery` b WHERE b.id = " +
       id
   );
+  for (let i = 0; i < rows.length; i++) {
+    const element = rows[i];
+    rows[i].innerimages = JSON.parse(element.innerimages);
+  }
   return res.json([
     {
       mess: "Single Gallery",
