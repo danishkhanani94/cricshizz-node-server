@@ -45,6 +45,7 @@ Router.post("/add-blog", async (req, res) => {
     innerbanner,
     match_category,
     team_a,
+    gallery,
     team_b,
   } = req.body;
   if (
@@ -62,6 +63,7 @@ Router.post("/add-blog", async (req, res) => {
       },
     ]);
   }
+  var tmp_gallery = gallery == null ? "" : gallery;
   const id = await db.insert("blogs", {
     title,
     banner_inner: innerbanner,
@@ -69,6 +71,7 @@ Router.post("/add-blog", async (req, res) => {
     longdescription,
     uploaded_by,
     banner_main: mainbanner,
+    gallery: tmp_gallery,
     match_category,
     team_a,
     team_b,
