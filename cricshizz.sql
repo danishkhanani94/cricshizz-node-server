@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2022 at 10:22 AM
+-- Generation Time: Nov 01, 2022 at 11:54 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -39,7 +39,7 @@ CREATE TABLE `blogs` (
   `match_category` varchar(255) DEFAULT NULL,
   `team_a` varchar(255) DEFAULT NULL,
   `team_b` varchar(255) DEFAULT NULL,
-  `gallery` int(11) DEFAULT NULL
+  `gallery` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
