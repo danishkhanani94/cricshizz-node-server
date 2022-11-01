@@ -5,8 +5,6 @@ const cors = require("cors");
 const app = express();
 var multer = require("multer");
 var upload = multer();
-const Router = express.Router();
-
 const corsOptions = {
   origin: "*",
   optionsSuccessStatus: 200,
@@ -15,7 +13,7 @@ const BlogRoutes = require("./routes/blog");
 const TeamRoutes = require("./routes/teams");
 const CategoryRoutes = require("./routes/category");
 const CountRouter = require("./routes/count");
-const GalleryRoutes = require("./routes/gallery")
+const GalleryRoutes = require("./routes/gallery");
 
 app.use(cors(corsOptions));
 
@@ -38,6 +36,6 @@ const server = app.listen(PORT, "0.0.0.0", () => {
 });
 
 process.on("unhandledRejection", (err, promise) => {
-  console.log("Error: ", err.message);
-  server.close(() => process.exit(1));
+  console.log("Error UnHandled: ", err.message);
+  // server.close(() => process.exit(1));
 });

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2022 at 01:50 PM
+-- Generation Time: Nov 01, 2022 at 10:22 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -62,7 +62,7 @@ CREATE TABLE `category_names` (
 CREATE TABLE `gallery` (
   `id` int(11) NOT NULL,
   `album_name` varchar(255) DEFAULT NULL,
-  `innerimages` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '[]' CHECK (json_valid(`innerimages`)),
+  `innerimages` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `team_a` varchar(255) DEFAULT NULL,
   `team_b` varchar(255) DEFAULT NULL,
   `match_category` varchar(255) DEFAULT NULL,
