@@ -63,7 +63,9 @@ const addBlog = async (req, res) => {
       },
     ]);
   }
-  var tmp_gallery = gallery == null ? "" : gallery;
+  var tmp_gallery = gallery === null ? 0 : gallery;
+
+  console.log(tmp_gallery);
   const id = await db.insert("blogs", {
     title,
     banner_inner: innerbanner,
@@ -71,7 +73,7 @@ const addBlog = async (req, res) => {
     longdescription,
     uploaded_by,
     banner_main: mainbanner,
-    gallery: tmp_gallery,
+    gallery: parseInt(tmp_gallery),
     match_category,
     team_a,
     team_b,
