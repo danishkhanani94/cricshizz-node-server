@@ -7,12 +7,16 @@ const getAll = async (req, res) => {
     limitstart = limitstart == undefined ? 0 : limitstart;
     const Limit =
       limitend == undefined ? "" : `LIMIT ${limitstart},${limitend}`;
-    const [rows, cols] = await db.execute(
-      "SELECT b.* , (SELECT te.name FROM `team_names` te WHERE te.id =  b.team_a ) as team_a , (SELECT t.name FROM `team_names` t WHERE t.id = b.team_b) as team_b , (SELECT c.name FROM `category_names` c WHERE c.id = b.match_category) as match_category FROM `blogs` b WHERE b.title LIKE '%" +
+
+    const [rows] = await db.execute(
+      "SELECT b.* , (SELECT te.name FROM `team_names` te WHERE te.id =  b.team_a ) as team_a , (SELECT t.name FROM `team_names` t WHERE t.id = b.team_b) as team_b , (SELECT c.name FROM `category_names` c WHERE c.id = b.match_category) as match_category FROM `blogs` b WHERE b.team_a IN(SELECT t.id  FROM `team_names` t WHERE t.name LIKE '%" +
         search +
-        "%' ORDER BY b.id DESC " +
+        "%') OR b.team_b IN(SELECT t.id  FROM `team_names` t WHERE t.name LIKE '%" +
+        search +
+        "%') ORDER BY b.id DESC " +
         Limit
     );
+
     return res.json([
       {
         mess: "All Blogs",
