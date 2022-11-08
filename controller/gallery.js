@@ -10,7 +10,7 @@ const getAll = async (req, res) => {
     const [rows, cols] = await db.execute(
       "SELECT b.* , (SELECT te.name FROM `team_names` te WHERE te.id =  b.team_a ) as team_a , (SELECT t.name FROM `team_names` t WHERE t.id = b.team_b) as team_b , (SELECT c.name FROM `category_names` c WHERE c.id = b.match_category) as match_category FROM `gallery` b  WHERE b.album_name LIKE '%" +
         search +
-        "%'  ORDER BY b.id DESC " +
+        "%'  ORDER BY b.event_date DESC " +
         Limit
     );
     return res.json([
@@ -68,6 +68,7 @@ const add = async (req, res) => {
       team_a,
       team_b,
       match_category,
+      event_date,
       mainbanner,
     } = req.body;
     if (
@@ -75,6 +76,7 @@ const add = async (req, res) => {
       !innerimages,
       !team_a,
       !team_b,
+      !event_date,
       !match_category,
       !mainbanner)
     ) {
@@ -90,6 +92,7 @@ const add = async (req, res) => {
       album_name,
       innerimages,
       team_a,
+      event_date,
       team_b,
       match_category,
       mainbanner,
