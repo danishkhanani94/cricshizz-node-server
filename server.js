@@ -16,7 +16,6 @@ const CountRouter = require("./routes/count");
 const GalleryRoutes = require("./routes/gallery");
 const LoginRoutes = require("./routes/login");
 require("dotenv").config();
-const jwt = require("jsonwebtoken");
 
 app.use(cors(corsOptions));
 
@@ -24,40 +23,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.json({ limit: "5000mb" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-
-  if (token == null) {
-    return res.json([
-      {
-        mess: "Token Is Required",
-        success: false,
-      },
-    ]);
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.json([
-        {
-          mess: "" + err,
-          success: false,
-        },
-      ]);
-    }
-    next();
-  });
-}
-
 // for parsing multipart/form-data
 app.use(upload.any());
 
-app.use("/counts", authenticateToken, CountRouter);
-app.use("/blogs", authenticateToken, BlogRoutes);
-app.use("/teams", authenticateToken, TeamRoutes);
-app.use("/category", authenticateToken, CategoryRoutes);
-app.use("/gallery", authenticateToken, GalleryRoutes);
+app.use("/counts", CountRouter);
+app.use("/blogs", BlogRoutes);
+app.use("/teams", TeamRoutes);
+app.use("/category", CategoryRoutes);
+app.use("/gallery", GalleryRoutes);
 app.use("/auth", LoginRoutes);
 
 const PORT = process.env.PORT || args[2] || 5000;
