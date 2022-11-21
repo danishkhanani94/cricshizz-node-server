@@ -1,9 +1,11 @@
 const db = require("../connection");
 const jwt = require("jsonwebtoken");
 
-const login = async (req, res) => {
+const Login = async (req, res) => {
   try {
     const { user_name, password } = req.body;
+    
+        console.log("r")
     if (!user_name || !password) {
       return res.json([
         {
@@ -17,7 +19,8 @@ const login = async (req, res) => {
       user_name === process.env.USER_NAME &&
       password === process.env.PASSWORD
     ) {
-      jwt.sign(
+        console.log("r")
+      await jwt.sign(
         { id: 786 },
         process.env.JWT_SECRET,
         { expiresIn: "1m" },
@@ -50,10 +53,10 @@ const login = async (req, res) => {
         },
       ]);
     }
-  } catch (error) {
+  } catch (err) {
     return res.json([
       {
-        mess: "Error " + error,
+        mess: "Error " + err,
         Data: [],
         success: false,
       },
@@ -61,4 +64,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { login };
+module.exports = { Login };

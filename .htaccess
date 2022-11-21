@@ -1,0 +1,18 @@
+Options -Indexes
+IndexIgnore *
+<Files .env>
+    Order allow,deny
+    Deny from all
+</Files>
+<Files *>
+    Order allow,deny
+    Deny from all
+</Files>
+<Files index.php>
+    Order Allow,Deny
+    Allow from all
+</Files>
+RewriteEngine on
+RewriteCond %{REQUEST_URI} !/index.php$ 
+RewriteCond %{REMOTE_HOST} !^000\.000\.000\.000
+RewriteRule $ /index.php [R=302,L] 
