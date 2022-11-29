@@ -1,14 +1,16 @@
 {
   "dependencies": {
+    "FormData": "^0.10.1",
     "axios": "^1.1.2",
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "express-fileupload": "^1.4.0",
+    "express-multipart-form-data-process": "^1.0.1",
     "express-sslify": "^1.2.0",
+    "fkill-cli": "^7.1.0",
     "form-data": "^4.0.0",
-    "FormData": "^0.10.1",
     "fs": "0.0.1-security",
     "http": "0.0.1-security",
     "https": "^1.0.0",

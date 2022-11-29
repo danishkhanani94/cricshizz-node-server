@@ -23,7 +23,7 @@ const Login = async (req, res) => {
       await jwt.sign(
         { id: 786 },
         process.env.JWT_SECRET,
-        { expiresIn: "1m" },
+        { expiresIn: "24h" },
         (err, token) => {
           if (err) {
             return res.status(401).json([
