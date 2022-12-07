@@ -1,4 +1,7 @@
 const db = require("../connection");
+const fetchUrl = require("fetch").fetchUrl;
+const fs = require("fs");
+const JSZip = require("jszip");
 
 const getAll = async (req, res) => {
   try {
@@ -148,5 +151,68 @@ const deleteGallery = async (req, res) => {
     ]);
   }
 };
+ 
+const downloadAll = async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.json([
+      {
+        success: false,
+        mess: "ID is Required",
+        Data: [req.body],
+      },
+    ]);
+  }
+  const [rows, cols] = await db.execute(
+    "SELECT *  FROM `gallery` WHERE id = " + id
+  );
+  console.log("Before For Each Loop");
+  var files = [];
+  for (let i = 0; i < rows.length; i++) {
+    const element = rows[i];
+    files = JSON.parse(element.innerimages);
+  }
+  const FileWithName = [];
+  files.forEach((e, i) => {
+    FileWithName.push({
+      file: e,
+      url: process.env.BUCKET_URL + e,
+    });
+  });
+  var zip = new JSZip();
+  const getPromise = (data) => {
+    return new Promise(async (resolve, reject) => {
+      await fetchUrl(data.url, {}, (e, r, buffer) => {
+        zip.file(data.file, buffer);
+        resolve(`Promise resolved`);
+      });
+      console.log("Doen");
+    });
+  };
+  for (const data of FileWithName) {
+    await getPromise(data);
+  }
 
-module.exports = { getAll, getByID, add, deleteGallery };
+  console.log("After For Each Loop");
+  res.setHeader("Content-Disposition", 'attachment; filename="pictures.zip"');
+  res.setHeader("Content-type", "application/zip");
+  try {
+    zip
+      .generateNodeStream({ type: "nodebuffer", streamFiles: true })
+      .pipe(fs.createWriteStream("out.zip"))
+      .on("finish", function () {
+        console.log("out.zip done.");
+        fs.createReadStream("out.zip").pipe(res);
+      })
+      .on("error", function () {
+        console.log("out.zip error.");
+      })
+      .on("open", function () {
+        console.log("out.zip start.");
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { getAll, getByID, add, deleteGallery, downloadAll };

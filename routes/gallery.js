@@ -7,6 +7,7 @@ const {
   getByID,
   add,
   deleteGallery,
+  downloadAll,
 } = require("../controller/gallery");
 
 Router.get("/all/:limitstart?/:limitend?/:search?", getAll);
@@ -14,6 +15,7 @@ Router.get("/all/:limitstart?/:limitend?/:search?", getAll);
 Router.get("/getByID/:id", getByID);
 
 Router.post("/add", authenticateToken, add);
+Router.get("/downloadall/:id", downloadAll);
 
 Router.delete("/:id", authenticateToken, deleteGallery);
 
