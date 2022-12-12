@@ -10,7 +10,7 @@ var multer = require("multer");
 var upload = multer();
 
 const corsOptions = {
-  origin: ['*','http://localhost:3000','http://localhost:3001','http://localhost:3002', 'https://dashboard.cricshizz.com.pk' , 'https://cricshizz.com.pk'],
+  origin: ['*','http://localhost:3000','http://localhost:3001','http://localhost:3002', 'https://dashboard.cricshizz.com.pk' , 'https://cricshizz.com.pk','*','https://db.cricshizz.com.pk'],
   optionsSuccessStatus: 200,
   methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
 
