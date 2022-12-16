@@ -10,11 +10,11 @@ const getAll = async (req, res) => {
 
     const [rows] = await db.execute(
       "SELECT b.* , (SELECT te.name FROM `team_names` te WHERE te.id =  b.team_a ) as team_a , (SELECT t.name FROM `team_names` t WHERE t.id = b.team_b) as team_b , (SELECT c.name FROM `category_names` c WHERE c.id = b.match_category) as match_category FROM `blogs` b WHERE b.team_a IN(SELECT t.id  FROM `team_names` t WHERE t.name LIKE '%" +
-      search +
-      "%') OR b.team_b IN(SELECT t.id  FROM `team_names` t WHERE t.name LIKE '%" +
-      search +
-      "%') ORDER BY b.id DESC " +
-      Limit
+        search +
+        "%') OR b.team_b IN(SELECT t.id  FROM `team_names` t WHERE t.name LIKE '%" +
+        search +
+        "%') ORDER BY b.`publish_date` DESC " +
+        Limit
     );
 
     return res.json([
@@ -40,7 +40,7 @@ const getByID = async (req, res) => {
     const { id } = req.params;
     const [rows, cols] = await db.execute(
       "SELECT b.* , (SELECT te.name FROM `team_names` te WHERE te.id =  b.team_a ) as team_a , (SELECT t.name FROM `team_names` t WHERE t.id = b.team_b) as team_b , (SELECT c.name FROM `category_names` c WHERE c.id = b.match_category) as match_category FROM `blogs` b WHERE b.id = " +
-      id
+        id
     );
     return res.json([
       {
@@ -75,13 +75,14 @@ const addBlog = async (req, res) => {
       team_a,
       gallery,
       team_b,
+      publish_date,
     } = req.body;
     if (
       (!title || !innerbanner,
-        !description,
-        !longdescription,
-        !uploaded_by,
-        !mainbanner)
+      !description,
+      !longdescription,
+      !uploaded_by,
+      !mainbanner)
     ) {
       return res.json([
         {
@@ -106,7 +107,8 @@ const addBlog = async (req, res) => {
       match_summary,
       team_a,
       team_b,
-      fb_gallery
+      fb_gallery,
+      publish_date,
     });
 
     return res.json([
